@@ -92,3 +92,9 @@ Here are the options you can set in the configuration file:
 
 You can override this configuration by specifying various options at runtime.
 See `tiq --help` for more information.
+
+
+License
+-------
+
+[MIT](LICENSE)
