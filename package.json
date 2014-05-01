@@ -1,0 +1,36 @@
+{
+  "name": "tiq",
+  "version": "0.0.1",
+  "description": "Tag everything.",
+  "main": "index.js",
+  "preferGlobal": "true",
+  "bin": {
+    "tiq": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imiric/tiq"
+  },
+  "keywords": [
+    "tag",
+    "bookmark"
+  ],
+  "scripts": {
+    "test": "node_modules/.bin/mocha"
+  },
+  "author": "Ivan Mirić <imiric@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/imiric/tiq/issues"
+  },
+  "homepage": "https://github.com/imiric/tiq",
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "commander": "~2.2.0",
+    "mkdirp": "~0.4.0"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1",
+    "mocha": "~1.18.2"
+  }
+}
