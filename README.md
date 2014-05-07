@@ -1,8 +1,8 @@
 tiq
 ===
 
-Tiq is a small tool that allows adding meaning to any piece of text by
-associating tags (typically shorter pieces of text) with it.
+Tiq is a small command-line tool that allows adding meaning to any piece of
+text by associating tags (typically shorter pieces of text) with it.
 
 In practice, this is useful as a web bookmarking tool, but its use is not
 limited to it.
@@ -79,6 +79,15 @@ You can also manage this yourself by prefixing all tokens with whatever text you
 want, but `-n` is a nice shortcut for that.
 
 
+Storage
+-------
+
+Out of the box, tiq comes with support for persisting the data in a JSON file
+using the [tiq-json](http://github.com/imiric/tiq-json) plugin.
+
+In the future additional storage plugins will be provided and listed here.
+
+
 Configuration
 -------------
 
@@ -88,10 +97,12 @@ The configuration file by default is expected in `$XDG_CONFIG_HOME/tiq/config.js
 Here are the options you can set in the configuration file:
 
 - `separator`: The separator used to split text items and tags. [default: ","]
-- `store`: The file used to store the data. [default: "$XDG_DATA_HOME/tiq/store.json"]
+- `store.plugin`: The name of the storage plugin to use. [default: "tiq-json"]
+- `store.config`: Additional configuration specific to the storage plugin. See
+  each plugin's documentation for the format it expects. [default: {}]
 
-You can override this configuration by specifying various options at runtime.
-See `tiq --help` for more information.
+You can override some of this configuration by specifying various options at
+runtime. See `tiq --help` for more information.
 
 
 License

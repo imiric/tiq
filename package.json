@@ -15,9 +15,6 @@
     "tag",
     "bookmark"
   ],
-  "scripts": {
-    "test": "node_modules/.bin/mocha"
-  },
   "author": "Ivan Mirić <imiric@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -25,12 +22,7 @@
   },
   "homepage": "https://github.com/imiric/tiq",
   "dependencies": {
-    "lodash": "~2.4.1",
     "commander": "~2.2.0",
-    "mkdirp": "~0.4.0"
-  },
-  "devDependencies": {
-    "chai": "~1.9.1",
-    "mocha": "~1.18.2"
+    "tiq-json": "~0.0.1"
   }
 }

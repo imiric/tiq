@@ -3,18 +3,12 @@
 /**
  * Module dependencies.
  */
-var fs = require('fs'),
-    path = require('path'),
-    mkdirp = require('mkdirp'),
-    program = require('commander'),
-    tiq = require('./tiq');
+var path = require('path'),
+    program = require('commander');
 
 var configFile = path.join(process.env.XDG_CONFIG_HOME ||
                     path.join(process.env.HOME, '.config'),
                     'tiq', 'config.json')
-var storeFile = path.join(process.env.XDG_DATA_HOME ||
-                    path.join(process.env.HOME, '.local', 'share'),
-                    'tiq', 'store.json');
 
 function parseArgs() {
   program
@@ -22,7 +16,6 @@ function parseArgs() {
     .version('0.0.1')
     .option('-c, --config <file>',   'Configuration file to use [' + configFile + ']', configFile)
     .option('-s, --separator <sep>', 'Token separator for tags [\',\']', ',')
-    .option('-S, --store <file>',    'Store file to use [' + storeFile + ']', storeFile)
     .option('-n, --namespace <ns>',  'Namespace to use')
     .parse(process.argv);
 
@@ -43,32 +36,57 @@ function readJSON(file) {
   return data;
 }
 
-function writeJSON(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2), {mode: 420});
+function loadPlugin(name, config) {
+  var plugin;
+  try {
+    plugin = require(name)(config);
+  } catch(e) {
+    if (e.code === 'MODULE_NOT_FOUND') {
+      throw new Error("Plugin '" + name + "' not found");
+    } else {
+      throw new Error("Unable to load plugin '" + name + "': " + e.toString());
+    }
+  }
+  return plugin;
 }
 
 function main() {
   var program = parseArgs(),
-      config = readJSON(program.config || configFile),
-      storeFile = program.store || config.store,
-      store = readJSON(storeFile);
+      config = readJSON(program.config || configFile);
+
+  if (!config.store) {
+    // Use a JSON store by default
+    config.store = {
+      plugin: "tiq-json",
+      config: {},
+    };
+  }
+
+  var tiq = loadPlugin(config.store.plugin, config.store.config);
+
+  // Additional initialization defined by the plugin
+  if (typeof tiq.enter == 'function') {
+    tiq.enter();
+  }
 
   // Override some config options
   config.separator = program.separator;
 
-  // Make sure the storage directory exists
-  mkdirp(path.dirname(storeFile));
-
   var args = program.args;
-  var tokens = args[0].split(program.separator);
+  var tokens = args[0].split(config.separator);
 
   if (args.length == 1) {
     process.stdout.write(
-        tiq.describe(tokens, program.namespace, store).concat('').join('\n'));
+      tiq.describe(tokens, program.namespace).concat('').join('\n')
+    );
   } else {
     var tags = args[1].split(program.separator);
-    store = tiq.associate(tokens, tags, program.namespace, store);
-    writeJSON(storeFile, store);
+    tiq.associate(tokens, tags, program.namespace);
+  }
+
+  // Cleanup defined by the plugin
+  if (typeof tiq.exit == 'function') {
+    tiq.exit();
   }
 }
 
