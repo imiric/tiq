@@ -76,9 +76,15 @@ function main() {
   var tokens = args[0].split(config.separator);
 
   if (args.length == 1) {
-    process.stdout.write(
-      tiq.describe(tokens, program.namespace).concat('').join('\n')
-    );
+    var printResult = function(tags) {
+      process.stdout.write(tags.concat('').join('\n'));
+    }
+    var result = tiq.describe(tokens, program.namespace);
+    if (typeof result.then == 'function') {
+      result.then(printResult);
+    } else {
+      printResult(result);
+    }
   } else {
     var tags = args[1].split(program.separator);
     tiq.associate(tokens, tags, program.namespace);
