@@ -1,3 +1,8 @@
+0.1.1 / 2014-05-13
+==================
+
+  * Made compatible with store plugins returning promises.
+
 0.1.0 / 2014-05-07
 ==================
 
