@@ -75,9 +75,6 @@ $ tiq -n john url http://myprivateblog.com/
 Now running `tiq -n john url` will return only things tagged with `url` under
 the `john` namespace.
 
-You can also manage this yourself by prefixing all tokens with whatever text you
-want, but `-n` is a nice shortcut for that.
-
 
 Storage
 -------
@@ -85,7 +82,10 @@ Storage
 Out of the box, tiq comes with support for persisting the data in a JSON file
 using the [tiq-json](http://github.com/imiric/tiq-json) plugin.
 
-In the future additional storage plugins will be provided and listed here.
+Alternatively, you can use the following storage plugins:
+
+- [tiq-db](https://github.com/imiric/tiq-db): store data in SQLite, PostgreSQL
+  or MySQL.
 
 
 Configuration
@@ -96,10 +96,10 @@ The configuration file by default is expected in `$XDG_CONFIG_HOME/tiq/config.js
 
 Here are the options you can set in the configuration file:
 
-- `separator`: The separator used to split text items and tags. [default: ","]
-- `store.plugin`: The name of the storage plugin to use. [default: "tiq-json"]
+- `separator`: The separator used to split text items and tags. [default: `","`]
+- `store.plugin`: The name of the storage plugin to use. [default: `"tiq-json"`]
 - `store.config`: Additional configuration specific to the storage plugin. See
-  each plugin's documentation for the format it expects. [default: {}]
+  each plugin's documentation for the format it expects. [default: `{}`]
 
 You can override some of this configuration by specifying various options at
 runtime. See `tiq --help` for more information.
